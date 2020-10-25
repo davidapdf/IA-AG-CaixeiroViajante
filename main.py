@@ -13,6 +13,7 @@ crossoverpoint2 = 18
 numberOfindividuals = 100
 
 tour = int(numberOfindividuals * 0.08)
+generations = 1000
 
 population = []
 #matriz adjacency
@@ -103,6 +104,15 @@ def pmx(arrey1, arrey2):
     return son
 
 
+
+def mutation (population,index,randGene1,randGene2):
+    gene1 = population[index][randGene1]
+    gene2 = population[index][randGene2]
+    population[index][randGene1] = gene2
+    population[index][randGene2] = gene1
+
+
+
 matrix = punishment(matrix)
 pop = citys
 
@@ -114,8 +124,11 @@ print(estorcatico[0],estorcatico[1])
 estorcatico[0].pop(len(citys))
 estorcatico[1].pop(len(citys))
 
+
 pmxV = pmx(estorcatico[0],estorcatico[1])
 
 pmxV.append(calc_dist(pmxV,matrix))
 
 print (pmxV)
+
+
