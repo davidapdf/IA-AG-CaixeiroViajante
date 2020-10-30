@@ -105,11 +105,12 @@ def pmx(arrey1, arrey2):
 
 
 
-def mutation (population,index,randGene1,randGene2):
-    gene1 = population[index][randGene1]
-    gene2 = population[index][randGene2]
-    population[index][randGene1] = gene2
-    population[index][randGene2] = gene1
+def mutation (population,randGene1,randGene2):
+    gene1 = population[randGene1]
+    gene2 = population[randGene2]
+    population[randGene1] = gene2
+    population[randGene2] = gene1
+    return population
 
 
 
@@ -118,17 +119,25 @@ pop = citys
 
 popInt = generateInitialPop(pop,matrix)
 
-estorcatico = selection(popInt)
+newPop = []
+graf = []
 
-print(estorcatico[0],estorcatico[1])
-estorcatico[0].pop(len(citys))
-estorcatico[1].pop(len(citys))
+for geracao in range(1000):
 
+    for item in range(5):
+        estorcatico = selection(popInt)
+        estorcatico[0].pop(len(citys))
+        estorcatico[1].pop(len(citys))
+        pmxV = pmx(estorcatico[0],estorcatico[1])
+        mutacaoX = random.sample(range(1, 100),1)
+        if mutacaoX[0] < 10:
+            pmxV = mutation(pmxV,5,10)
+        pmxV.append(calc_dist(pmxV,matrix))
+        newPop.append(pmxV)
+    for app in range(numberOfindividuals - 5):
+        newPop.append(popInt[app])
 
-pmxV = pmx(estorcatico[0],estorcatico[1])
-
-pmxV.append(calc_dist(pmxV,matrix))
-
-print (pmxV)
-
-
+    popInt = copy.deepcopy(newPop)
+    newPop = []
+    graf.append([geracao,mediaFitness(popInt),bestFitness(popInt)])
+    print(f'Fim geração: {geracao} média: {mediaFitness(popInt)} : best: {bestFitness(popInt)}')
