@@ -1,19 +1,21 @@
-
-#import numpy as np # linear algebra
-#import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
-
+import numpy as np
+import pandas as pd
 import random as random
 import copy
 import operator
+from pandas import DataFrame
+import matplotlib.pyplot as plt
 
 citys = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
 crossoverpoint = 8
 crossoverpoint2 = 18
+taxaMult = 3
+generet = 1000
 
-numberOfindividuals = 100
+numberOfindividuals = 300
+son = 3
 
 tour = int(numberOfindividuals * 0.08)
-generations = 1000
 
 population = []
 #matriz adjacency
@@ -122,22 +124,26 @@ popInt = generateInitialPop(pop,matrix)
 newPop = []
 graf = []
 
-for geracao in range(1000):
+for geracao in range(generet):
 
-    for item in range(5):
+    for item in range(son):
         estorcatico = selection(popInt)
         estorcatico[0].pop(len(citys))
         estorcatico[1].pop(len(citys))
         pmxV = pmx(estorcatico[0],estorcatico[1])
         mutacaoX = random.sample(range(1, 100),1)
-        if mutacaoX[0] < 10:
-            pmxV = mutation(pmxV,5,10)
+        if mutacaoX[0] < taxaMult:
+            pmxV = mutation(pmxV,7,15)
         pmxV.append(calc_dist(pmxV,matrix))
         newPop.append(pmxV)
-    for app in range(numberOfindividuals - 5):
+    for app in range(numberOfindividuals - son):
         newPop.append(popInt[app])
 
     popInt = copy.deepcopy(newPop)
     newPop = []
-    graf.append([geracao,mediaFitness(popInt),bestFitness(popInt)])
+    graf.append([mediaFitness(popInt),bestFitness(popInt)])
     print(f'Fim geração: {geracao} média: {mediaFitness(popInt)} : best: {bestFitness(popInt)}')
+
+df = DataFrame(graf,columns=["Mean","Best route"])
+df.plot()
+plt.show()
