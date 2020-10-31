@@ -7,15 +7,15 @@ from pandas import DataFrame
 import matplotlib.pyplot as plt
 
 citys = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25]
-crossoverpoint = 8
-crossoverpoint2 = 18
+crossoverpoint = 10
+crossoverpoint2 = 22
 taxaMult = 3
-generet = 1000
+generet = 2000
 
-numberOfindividuals = 300
-son = 3
+numberOfindividuals = 400
+son = 2
 
-tour = int(numberOfindividuals * 0.08)
+tour = int(numberOfindividuals * 0.10)
 
 population = []
 #matriz adjacency
@@ -133,7 +133,7 @@ for geracao in range(generet):
         pmxV = pmx(estorcatico[0],estorcatico[1])
         mutacaoX = random.sample(range(1, 100),1)
         if mutacaoX[0] < taxaMult:
-            pmxV = mutation(pmxV,7,15)
+            pmxV = mutation(pmxV,7,18)
         pmxV.append(calc_dist(pmxV,matrix))
         newPop.append(pmxV)
     for app in range(numberOfindividuals - son):
@@ -142,7 +142,7 @@ for geracao in range(generet):
     popInt = copy.deepcopy(newPop)
     newPop = []
     graf.append([mediaFitness(popInt),bestFitness(popInt)])
-    print(f'Fim geração: {geracao} média: {mediaFitness(popInt)} : best: {bestFitness(popInt)}')
+    print(f'Fim geração: {geracao} média: {round(mediaFitness(popInt),1)} : best: {bestFitness(popInt)}')
 
 df = DataFrame(graf,columns=["Mean","Best route"])
 df.plot()
